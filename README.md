@@ -16,11 +16,11 @@ from the light in the middle to the dark corners; a row of marquee bulbs
 runs along the rail; and each side's 21 discs stand in a stack beside the
 board that goes down as they are played.
 
-![He wins, and is gracious about it](docs/hewins.gif)
+![A whole game against THE BOSS: he talks it through, sees his win coming, and is gracious about it](docs/gameplay.gif)
 
-| Title | The opening | You win |
-|---|---|---|
-| ![title](docs/title.gif) | ![opening](docs/opening.gif) | ![you win](docs/youwin.gif) |
+| Title | The opening | You win | He wins |
+|---|---|---|---|
+| ![title](docs/title.gif) | ![opening](docs/opening.gif) | ![you win](docs/youwin.gif) | ![he wins](docs/hewins.gif) |
 
 (Captured from the PC simulator in `tools/chsim`, which runs the real game
 and graphics code and renders what the device shows. The game has been
