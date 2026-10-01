@@ -19,7 +19,7 @@ sys.path.insert(0, str(HERE.parent / "chsim"))
 from chsim import find_cxx  # noqa: E402
 
 # Must match enum class Sfx in src/audio/Audio.h.
-SFX = ["cursor", "select", "deny", "drop", "coin", "whoosh", "grumble", "laugh", "win", "lose", "draw", "title",
+SFX = ["cursor", "select", "deny", "drop", "coin", "whoosh", "win", "lose", "draw", "title",
        "tick", "tock"]
 
 

@@ -7,7 +7,7 @@
 #include <stdint.h>
 
 enum class Sfx : uint8_t {
-    Cursor, Select, Deny, Drop, Coin, Whoosh, Grumble, Laugh, Win, Lose, Draw, Title,
+    Cursor, Select, Deny, Drop, Coin, Whoosh, Win, Lose, Draw, Title,
     Tick, Tock,                      // soft (quieter than the rest): keep them last
     COUNT
 };

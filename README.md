@@ -5,13 +5,16 @@ Four in a row for the [CHGame](https://github.com/bateske/CH32SerialBoot) handhe
 [CHBlackjack](https://github.com/bateske/CHBlackjack), CHChess and
 CHBackgammon: a blue board standing on green felt, discs that are casino
 chips dropping behind it with a knock and a bounce, and across the table the
-dealer from the blackjack game, who has a great deal to say. He plays
-properly, he knows when he is about to win, and he will tell you so. When a
-four is made the camera comes in to twice the size and the four discs light
-up one by one; then the scene cuts to him - stamping with rage if you won,
-insufferable if he did.
+dealer from the blackjack game - courtesy itself, and something of a coach.
+He plays properly and talks you through the game as he does: a good block
+gets a "WELL SPOTTED!", a missed win a "LOOK AGAIN", and he warns you when
+he has three in a row. When a four is made the camera comes in to twice the
+size and the four discs light up one by one; then the scene cuts to him -
+"BRAVO!" and his congratulations if you won, "GOOD GAME" and a word of
+encouragement if he did. On the table, under the lamp: a row of marquee
+bulbs along the rail and his cup of coffee, steaming.
 
-![He wins: he says so first](docs/hewins.gif)
+![He wins, and is gracious about it](docs/hewins.gif)
 
 | Title | The opening | You win |
 |---|---|---|
@@ -32,7 +35,7 @@ You need the Arduino IDE (2.x) or `arduino-cli`, and:
 3. **This repository**, in a folder named `CHFour`.
 
 Pick *Tools > Optimize > Smallest + LTO* and *Tools > USB > Upload only*.
-That is 36.4 KB of the 50,944-byte application region, with room left for
+That is 36.9 KB of the 50,944-byte application region, with room left for
 the two flash pages that hold your record and a saved game. From the
 command line:
 
@@ -78,22 +81,24 @@ four and shortens his pauses.
 His lines are not random. After every move the game works out what is true
 on the board - which cells each side could win in right now, before and
 after the move - and his search reports what it found, so what he says is
-apt:
+about the position in front of you:
 
-* about to drop the fourth disc: *WATCH THIS...*
-* ... into a win you could have blocked: *YOU FORGOT TO BLOCK!*; or one
-  your own disc set up for him: *FOR ME? YOU SHOULDN'T HAVE!*
-* his search has found a forced win: *IT'S OVER IN 3 MOVES. I COUNTED.*
-  (He counted. The tests check that he then wins within that many.)
-* you threatened and he blocks: *NICE TRY, PAL.* You blocked him: *HEY!
-  THAT WAS MINE!*
-* you had a win and played somewhere else: *HA! YOU MISSED IT!*
-* you have two ways to win, and he can only stop one: *TWO WAYS? NO FAIR!*
-* his search says he is lost: *THIS TABLE IS WOBBLY!*
+* you blocked his three: *WELL SPOTTED!* You threatened and he must block:
+  *GOOD THREAT! I MUST BLOCK.*
+* you had a win and played somewhere else: *YOU HAD A FOUR THERE! LOOK
+  AGAIN.*
+* you have two ways to win, and he can only stop one: *TWO THREATS AT ONCE.
+  SUPERB!*
+* he has three in a row: *CAREFUL: I HAVE THREE.* You did not block it: *I
+  HAD THREE IN A ROW THERE.* Your disc let him play on top of it for the
+  win: *THAT DISC OPENED THE CELL ABOVE.*
+* his search has found a forced win: *I SEE A WIN IN 3 MOVES. LOOK CLOSE.*
+  (The tests check that he then wins within that many.)
+* about to drop the fourth disc: *PARDON ME. THAT MAKES FOUR.*
 
-and some small talk in between, not too often. 120 lines in all, none
-repeated until the others of its kind have been said. He is the villain of
-a children's film: sure of himself, a sore loser, never unkind.
+and a tip now and then (*BUILD TWO THREATS AT ONCE.*), not too often. 98
+lines in all, none repeated until the others of its kind have been said.
+You win, he congratulates you; you lose, he asks you to try again.
 
 ## How it fits
 

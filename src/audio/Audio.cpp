@@ -40,19 +40,12 @@ static const Step DENY[]    = { S(900, 650, 70) };
 static const Step DROP[]    = { S(2400, 1100, 14), REST(60), S(2000, 1000, 10), REST(40), S(1800, 0, 6) };
 static const Step COIN[]    = { S(2800, 0, 10), S(3700, 0, 28) };
 static const Step WHOOSH[]  = { S(1200, 3800, 90) };
-// The dealer, cross: low notes falling over each other.
-static const Step GRUMBLE[] = {
-    S(1100, 800, 90), S(1000, 700, 90), S(1200, 700, 120), REST(40), S(900, 600, 220) };
-// ... and pleased with himself: "ha ha ha ha haaa".
-static const Step LAUGH[]   = {
-    S(2400, 2000, 60), REST(30), S(2200, 1800, 60), REST(30), S(2000, 1650, 60), REST(30),
-    S(1800, 1500, 60), REST(30), S(1600, 1100, 240) };
 // Victory: a short tune (was a Playtune score in CHBlackjack).
 static const Step WIN[]     = {
     S(2093, 0, 110), S(2637, 0, 110), S(3136, 0, 110), S(4186, 0, 220), REST(60),
     S(3520, 0, 110), S(4186, 0, 330) };
-static const Step LOSE[]    = { S(1568, 1480, 260), S(1480, 1397, 260), S(1397, 1319, 260), S(1319, 1210, 350),
-                                S(1210, 1100, 350) };
+// You lost: not a dirge - a few notes down and a hopeful one up.
+static const Step LOSE[]    = { S(2093, 0, 160), S(1760, 0, 160), S(1568, 0, 260), REST(80), S(1760, 0, 120), S(2093, 0, 300) };
 static const Step DRAW[]    = { S(2637, 0, 70), S(1976, 0, 70), S(1568, 0, 70), S(1175, 0, 160) };
 static const Step TITLE[]   = {
     S(1568, 0, 90), S(2093, 0, 90), S(2637, 0, 90), S(3136, 0, 180), REST(40),
@@ -65,7 +58,7 @@ struct SfxDef { const Step *steps; uint8_t n, prio; };
 #define DEF(a, p) { a, (uint8_t)(sizeof(a) / sizeof(a[0])), p }
 static const SfxDef DEFS[(int)Sfx::COUNT] = {
     DEF(CURSOR, 0), DEF(SELECT, 1), DEF(DENY, 1), DEF(DROP, 2), DEF(COIN, 1), DEF(WHOOSH, 2),
-    DEF(GRUMBLE, 4), DEF(LAUGH, 4), DEF(WIN, 4), DEF(LOSE, 4), DEF(DRAW, 3), DEF(TITLE, 2),
+    DEF(WIN, 4), DEF(LOSE, 4), DEF(DRAW, 3), DEF(TITLE, 2),
     DEF(TICK, 0), DEF(TOCK, 0),
 };
 

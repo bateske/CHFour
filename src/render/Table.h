@@ -41,7 +41,9 @@ inline int discX(uint8_t col) { return BOARD_X + col * CELL + 1; }
 inline int discY(uint8_t row) { return BOARD_Y + (c4::ROWS - 1 - row) * CELL + 1; }
 
 void wall();
-void rail();
+void rail(uint32_t frame);                         // ... with a row of bulbs chasing along it
+// What stands on the felt beside the board: the dealer's coffee, steaming.
+void props(uint32_t frame);
 // The dealer with his top-left at (x, y); look: 0 left, 1 centre, 2 right.
 // big: at twice the size (the endings).
 void dealer(uint8_t expr, uint8_t look, int x = DEALER_X, int y = DEALER_Y, bool big = false);

@@ -1,7 +1,7 @@
 // The play screen's presentation: the disc hovering over the board and
 // falling behind it, the dealer watching, blinking and talking, the camera
 // coming in on the winning four as it lights up, and the endings - his
-// tantrum when you win, his gloating when he does.
+// congratulations when you win, a kind word when he does.
 //
 // The game reports events; the stage turns them into motion and says busy()
 // until it has shown them (CHBlackjack's Presenter, CHChess's Stage).

@@ -165,7 +165,7 @@ static void startScene() {
     fx::clear();
     talkLen = 0;
     skip = false;
-    audio::sfx(youWon() ? Sfx::Win : Sfx::Laugh);
+    audio::sfx(youWon() ? Sfx::Win : Sfx::Lose);
     if (youWon()) audio::led(audio::LED_PARTY);
 }
 
@@ -193,22 +193,11 @@ static void sceneUpdate() {
     uint16_t t = phaseT;
     if (t < 8) pal::setFade((uint8_t)(t * 2 + 2));
     if (t == 10) {
-        fx::banner(youWon() ? "CURSES!" : "I WIN!", youWon() ? fx::B_RED : fx::B_GOLD, 12, 100);
+        fx::banner(youWon() ? "BRAVO!" : "GOOD GAME", youWon() ? fx::B_RAINBOW : fx::B_GOLD, 12, 100);
         fx::holdBanner(true);
     }
-    if (youWon()) {
-        // He stamps (the screen jumps as he lands), steam coming off him;
-        // and the confetti is yours.
-        if (t < 150) {
-            if (t % 13 == 12) fx::shake(4, 2);
-            if (t % 5 == 0) fx::spawn(fx::DUST, (t & 1) ? 34 : 94, 40, (t & 1) ? -10 : 10, -22, 30, (t & 2) ? WHITE : SILVER);
-        }
-        if (t == 80) audio::sfx(Sfx::Grumble);
-        if (t % 40 == 5 && t < 170) { fx::fountain(8, 126, 10); fx::fountain(120, 126, 10); }
-    } else {
-        if (t % 30 == 12) fx::fountain(fx::rndRange(20, 108), 100, 10);
-        if (t == 110) audio::sfx(Sfx::Lose);
-    }
+    // You won: the confetti is yours. You lost: a quiet word, no fuss.
+    if (youWon() && t % 40 == 5 && t < 250) { fx::fountain(8, 126, 10); fx::fountain(120, 126, 10); }
     // His last word, typed under him from CAPTION_AT.
     if (skip && !overDone) { overDone = true; skip = false; }
     if (t >= 150) overDone = true;
@@ -351,7 +340,7 @@ static int fallY() {
 static uint8_t expression() {
     uint8_t face = talkFace == E_TALK ? (uint8_t)E_NORMAL : talkFace;
     // The game just ended on the board: he has seen it.
-    if (phase == HOLD && winnerSide != c4::NOBODY && vsCpu()) return youWon() ? E_SURPRISED : E_SMILE;
+    if (phase == HOLD && winnerSide != c4::NOBODY && vsCpu()) return youWon() ? E_SURPRISED : E_NORMAL;
     if (talking()) return ((talkT >> 2) & 1) ? (uint8_t)E_TALK : face;
     if (bubbleUp()) return face;
     if (blinkT) return E_BLINK;
@@ -396,7 +385,8 @@ static void drawPlay(uint32_t frame) {
     if (bubbleUp()) speechBubble(talk, talkT);
     else drawPlaque();
     drawTurn(frame);
-    rail();
+    rail(frame);
+    props(frame);
     // Half the discs each to begin with.
     uint8_t reds = c4::count(shown.side[0]), golds = c4::count(shown.side[1]);
     drawStacks((uint8_t)(21 - reds - (fall.on && fall.side == 0)), (uint8_t)(21 - golds - (fall.on && fall.side == 1)));
@@ -435,31 +425,21 @@ static void drawScene(uint32_t frame) {
     int typed = t - CAPTION_AT;
     int len = (int)strlen(endLine);
     bool typing = typed >= 0 && typed < len;
-    uint8_t expr, look = 1;
+    uint8_t expr = blinkT ? (uint8_t)E_BLINK : endFace, look = 1;
     int x = 16, y = 22;
     if (youWon()) {
-        // The tantrum: a hot room, and the dealer stamping in it.
-        gfx_clear(WINE);
-        dither(0, 0, 128, 128, INK, (uint8_t)((t >> 3) & 1));
-        bool cross = t < 150;
-        if (cross) {
-            int a = fx::isin((t * 10) & 127);       // a hop every 13 ticks
-            y -= (a * 6) >> 8;
-            x += (t & 2) ? 1 : -1;
-        }
-        expr = cross ? E_ANGRY : endFace;
-    } else {
-        // His victory lap: a sunburst turning behind him as he sways.
+        // Congratulations: a sunburst turning behind him as he nods.
         gfx_clear(NAVY);
         for (int i = 0; i < 16; i++) {
             int a = i * 16 + (int)(frame & 255);
             ray(64 + ((fx::isin(a + 64) * 120) >> 8), 60 + ((fx::isin(a) * 120) >> 8), (i & 1) ? FX_A : WINE);
         }
-        x += (fx::isin(t * 5) * 9) >> 8;
-        int b = fx::isin((t * 10) & 127);
-        y -= (b * 3) >> 8;
-        expr = E_SMILE;
-        look = (uint8_t)(((t / 20) & 1) ? 0 : 2);
+        y += (fx::isin((t * 6) & 127) * 2) >> 8;
+    } else {
+        // A quiet room, the light on him: he has something kind to say.
+        gfx_clear(INK);
+        dither(0, 0, 128, 128, NAVY, 0);
+        gfx_fillEllipse(64, 62, 56, 50, NAVY);
     }
     if (typing && ((t >> 2) & 1)) expr = E_TALK;
     dealer(expr, look, x & ~1, y, true);
@@ -469,7 +449,6 @@ static void drawScene(uint32_t frame) {
         panel(10, 95, 108, 31, 3, NAVY, GOLD);
         typedText(64, 111 - (textRows(endLine) * 7) / 2, endLine, typed, WHITE);
     }
-    fx::applyShake(0, 127);
 }
 
 void renderScene(uint32_t) {
@@ -481,7 +460,7 @@ void renderWall(uint32_t frame, const char *text, uint8_t face) {
     bool blink = (frame % 150) < 6;
     dealer(blink ? (uint8_t)E_BLINK : face, 1);
     speechBubble(text, 99);
-    rail();
+    rail(frame);
 }
 
 // A still scene is not redrawn: the frame is flushed again, so palette
@@ -520,7 +499,7 @@ bool render(uint32_t frame, uint32_t ui) {
 #if CHF4_DEBUG
 void showEnding(uint8_t who) {
     winnerSide = who;
-    endFace = who == game::YOU ? E_SURPRISED : E_SMILE;
+    endFace = E_SMILE;
     fmtStr(endLine, game::said);
     phase = FADE;
     phaseT = 0;

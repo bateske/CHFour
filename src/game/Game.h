@@ -8,8 +8,8 @@
 //
 // Against the CPU you are RED and the dealer GOLD. His lines come from what
 // is true on the board - the cells either side could win in right now,
-// before and after each move - and from what his search found, so he brags
-// only when he really is winning.
+// before and after each move - and from what his search found, so what he
+// says is about the position in front of you.
 #pragma once
 #include <stdint.h>
 #include "../rules/Board.h"

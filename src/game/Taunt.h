@@ -1,5 +1,6 @@
-// What the dealer has to say. He is the villain of a children's film: sure
-// of himself, a sore loser, and never unkind.
+// What the dealer has to say. He is courtesy itself, and something of a
+// coach: he praises a good move, points out what a move missed or gave
+// away, congratulates you when you win and encourages you when you lose.
 //
 // The game decides when (game/Game.cpp knows what is true on the board: who
 // can win, who just missed it, what the search saw coming); this picks the
@@ -15,7 +16,7 @@ namespace taunt {
 enum Kind : uint8_t {
     // Against the dealer.
     START,          // a new game
-    WIN_NOW,        // he is about to drop the fourth disc
+    WIN_NOW,        // he is about to drop the fourth disc (and is sorry about it)
     GIFT,           // ... into a win your last disc opened for him
     UNBLOCKED,      // ... that you could have blocked
     FORCED,         // the search has found a win in # of his moves

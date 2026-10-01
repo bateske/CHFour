@@ -50,8 +50,8 @@ static bool fresh;
 static const char *const OPPONENT[game::LEVELS] = {"ROOKIE", "SHARK", "THE BOSS"};
 // What he says for himself on the setup screen.
 static const char *const OPP_LINE[game::LEVELS] = {
-    "I'M NEW AT\nTHIS. BE\nNICE!", "I PLAY FOR\nKEEPS, KID.", "NOBODY\nBEATS\nTHE BOSS."};
-static const uint8_t OPP_FACE[game::LEVELS] = {table::E_SURPRISED, table::E_RAISED, table::E_SMILE};
+    "A GENTLE\nGAME TO\nWARM UP.", "A PROPER\nCHALLENGE.\nGOOD LUCK!", "MY VERY\nBEST PLAY.\nGOOD LUCK!"};
+static const uint8_t OPP_FACE[game::LEVELS] = {table::E_SMILE, table::E_NORMAL, table::E_RAISED};
 
 #if CHF4_DEBUG
 // The CPU's last think (debug W): how long, and its longest slice of a tick.
@@ -540,7 +540,7 @@ static bool debugHook(char cmd, const char *args) {
             uint8_t who = (uint8_t)dbg::parseNum(args, 10);
             if (who > 1 || cur != Scr::Play || !game::humanToMove()) return false;
             game::resign();
-            fmtStr(game::said, who ? "I AM THE\nGREATEST!" : "BEST OF\nTHREE?");
+            fmtStr(game::said, who ? "GOOD GAME!\nDO TRY\nAGAIN." : "CONGRATU-\nLATIONS!\nWELL PLAYED.");
             game::winner = who;
             stage::showEnding(who);
             return true;

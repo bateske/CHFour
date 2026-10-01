@@ -22,10 +22,10 @@ col 4
 wait 100
 perf close up on the four
 wait 200
-perf his tantrum
+perf you win: bravo
 say M 0 2 0 717263
 wait 20
 waitturn 0
 col 7
 wait 330
-perf his gloating
+perf he wins: good game

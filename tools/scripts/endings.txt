@@ -1,5 +1,5 @@
-# The endings: you win (the close-up, the four lighting up, his tantrum),
-# he wins (he says so first, then gloats), and a two-player win.
+# The endings: you win (the close-up, the four lighting up, his congratulations),
+# he wins (he warns you first, then a kind word), and a two-player win.
 say M 0 2 0 112233
 wait 30
 waitturn 5
@@ -11,11 +11,11 @@ snap win_zoom
 wait 30
 snap win_lit
 wait 60
-snap tantrum1
+snap bravo1
 wait 40
-snap tantrum2
+snap bravo2
 wait 60
-snap tantrum3
+snap bravo3
 waitover 20
 snap win_result
 tap A
@@ -29,9 +29,9 @@ snap lose_says
 wait 80
 snap lose_zoom
 wait 70
-snap gloat1
+snap goodgame1
 wait 50
-snap gloat2
+snap goodgame2
 waitover 20
 snap lose_result
 tap B
