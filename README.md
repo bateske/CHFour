@@ -10,9 +10,11 @@ He plays properly and talks you through the game as he does: a good block
 gets a "WELL SPOTTED!", a missed win a "LOOK AGAIN", and he warns you when
 he has three in a row. When a four is made the camera comes in to twice the
 size and the four discs light up one by one; then the scene cuts to him -
-"BRAVO!" and his congratulations if you won, "GOOD GAME" and a word of
-encouragement if he did. On the table, under the lamp: a row of marquee
-bulbs along the rail and his cup of coffee, steaming.
+"GOOD GAME" and his congratulations if you won, "TRY AGAIN" and a word of
+encouragement if he did. The felt lies under a lamp, its greens in rings
+from the light in the middle to the dark corners; a row of marquee bulbs
+runs along the rail; and each side's 21 discs stand in a stack beside the
+board that goes down as they are played.
 
 ![He wins, and is gracious about it](docs/hewins.gif)
 
@@ -35,7 +37,7 @@ You need the Arduino IDE (2.x) or `arduino-cli`, and:
 3. **This repository**, in a folder named `CHFour`.
 
 Pick *Tools > Optimize > Smallest + LTO* and *Tools > USB > Upload only*.
-That is 36.9 KB of the 50,944-byte application region, with room left for
+That is 36.3 KB of the 50,944-byte application region, with room left for
 the two flash pages that hold your record and a saved game. From the
 command line:
 

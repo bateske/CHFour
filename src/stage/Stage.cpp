@@ -193,11 +193,9 @@ static void sceneUpdate() {
     uint16_t t = phaseT;
     if (t < 8) pal::setFade((uint8_t)(t * 2 + 2));
     if (t == 10) {
-        fx::banner(youWon() ? "BRAVO!" : "GOOD GAME", youWon() ? fx::B_RAINBOW : fx::B_GOLD, 12, 100);
+        fx::banner(youWon() ? "GOOD GAME" : "TRY AGAIN", fx::B_GOLD, 12, 100);
         fx::holdBanner(true);
     }
-    // You won: the confetti is yours. You lost: a quiet word, no fuss.
-    if (youWon() && t % 40 == 5 && t < 250) { fx::fountain(8, 126, 10); fx::fountain(120, 126, 10); }
     // His last word, typed under him from CAPTION_AT.
     if (skip && !overDone) { overDone = true; skip = false; }
     if (t >= 150) overDone = true;
@@ -386,10 +384,12 @@ static void drawPlay(uint32_t frame) {
     else drawPlaque();
     drawTurn(frame);
     rail(frame);
-    props(frame);
     // Half the discs each to begin with.
     uint8_t reds = c4::count(shown.side[0]), golds = c4::count(shown.side[1]);
-    drawStacks((uint8_t)(21 - reds - (fall.on && fall.side == 0)), (uint8_t)(21 - golds - (fall.on && fall.side == 1)));
+    // ... less those on the board, and the one in hand or on its way down.
+    bool hand = fall.on || (phase == PLAY && live);
+    uint8_t whose = fall.on ? fall.side : turnSide;
+    drawStacks((uint8_t)(21 - reds - (hand && whose == 0)), (uint8_t)(21 - golds - (hand && whose == 1)));
     if (fall.on) {
         int y = fallY();
         drawDisc(discX(fall.col), y, fall.side);
@@ -406,20 +406,6 @@ static void drawPlay(uint32_t frame) {
     }
 }
 
-// Bresenham from the sunburst's centre, stopped where it leaves the screen.
-static void ray(int x1, int y1, uint8_t c) {
-    int x = 64, y = 60;
-    int dx = x1 > x ? x1 - x : x - x1, dy = y1 > y ? y1 - y : y - y1;
-    int stepX = x < x1 ? 1 : -1, stepY = y < y1 ? 1 : -1, err = dx - dy;
-    while ((unsigned)x < GFX_W && (unsigned)y < GFX_H) {
-        gfx_pixel(x, y, c);
-        if (x == x1 && y == y1) break;
-        int e2 = err << 1;
-        if (e2 > -dy) { err -= dy; x += stepX; }
-        if (e2 < dx) { err += dx; y += stepY; }
-    }
-}
-
 static void drawScene(uint32_t frame) {
     int t = phaseT;
     int typed = t - CAPTION_AT;
@@ -427,20 +413,11 @@ static void drawScene(uint32_t frame) {
     bool typing = typed >= 0 && typed < len;
     uint8_t expr = blinkT ? (uint8_t)E_BLINK : endFace, look = 1;
     int x = 16, y = 22;
-    if (youWon()) {
-        // Congratulations: a sunburst turning behind him as he nods.
-        gfx_clear(NAVY);
-        for (int i = 0; i < 16; i++) {
-            int a = i * 16 + (int)(frame & 255);
-            ray(64 + ((fx::isin(a + 64) * 120) >> 8), 60 + ((fx::isin(a) * 120) >> 8), (i & 1) ? FX_A : WINE);
-        }
-        y += (fx::isin((t * 6) & 127) * 2) >> 8;
-    } else {
-        // A quiet room, the light on him: he has something kind to say.
-        gfx_clear(INK);
-        dither(0, 0, 128, 128, NAVY, 0);
-        gfx_fillEllipse(64, 62, 56, 50, NAVY);
-    }
+    (void)frame;
+    // A quiet room, the light on him, win or lose: he has a word for you.
+    gfx_clear(INK);
+    dither(0, 0, 128, 128, NAVY, 0);
+    gfx_fillEllipse(64, 62, 56, 50, NAVY);
     if (typing && ((t >> 2) & 1)) expr = E_TALK;
     dealer(expr, look, x & ~1, y, true);
     fx::drawParticles(3);

@@ -11,11 +11,11 @@ snap win_zoom
 wait 30
 snap win_lit
 wait 60
-snap bravo1
+snap goodgame1
 wait 40
-snap bravo2
+snap goodgame2
 wait 60
-snap bravo3
+snap goodgame3
 waitover 20
 snap win_result
 tap A
@@ -29,9 +29,9 @@ snap lose_says
 wait 80
 snap lose_zoom
 wait 70
-snap goodgame1
+snap tryagain1
 wait 50
-snap goodgame2
+snap tryagain2
 waitover 20
 snap lose_result
 tap B

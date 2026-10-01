@@ -42,8 +42,6 @@ inline int discY(uint8_t row) { return BOARD_Y + (c4::ROWS - 1 - row) * CELL + 1
 
 void wall();
 void rail(uint32_t frame);                         // ... with a row of bulbs chasing along it
-// What stands on the felt beside the board: the dealer's coffee, steaming.
-void props(uint32_t frame);
 // The dealer with his top-left at (x, y); look: 0 left, 1 centre, 2 right.
 // big: at twice the size (the endings).
 void dealer(uint8_t expr, uint8_t look, int x = DEALER_X, int y = DEALER_Y, bool big = false);
@@ -63,7 +61,8 @@ void drawDisc(int x, int y, uint8_t side, bool lit = false);
 // The board's face over rows of a column (a disc falling behind it shows
 // only through the holes): the cells from world row y0 to y1.
 void frameOver(uint8_t col, int y0, int y1);
-// Each side's discs still to play, in stacks either side of the board.
+// Each side's discs still to play, in stacks either side of the board: 21
+// each to begin with, one fewer for every disc played (and the one in hand).
 void drawStacks(uint8_t red, uint8_t gold);
 
 }  // namespace table

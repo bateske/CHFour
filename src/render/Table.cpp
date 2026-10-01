@@ -57,27 +57,6 @@ void rail(uint32_t frame) {
     for (int i = 0; i < 32; i++) gfx_pixel(1 + i * 4, RAIL_Y + 2, (i + 3 - k % 3) % 3 ? WOOD : FX_B);
 }
 
-void props(uint32_t frame) {
-    // A cup and saucer on the felt, top right, and its steam: three wisps
-    // that sway as they rise and thin out.
-    int x = 112, y = 62;
-    gfx_fillEllipse(x + 5, y + 9, 7, 2, SILVER);
-    gfx_hline(x - 1, y + 8, 12, WHITE);
-    gfx_fillRect(x + 1, y + 1, 8, 7, WHITE);
-    gfx_hline(x + 2, y + 8, 6, WHITE);
-    gfx_vline(x + 8, y + 2, 5, SILVER);
-    gfx_hline(x + 1, y + 1, 8, WOOD);                   // the coffee
-    gfx_pixel(x + 10, y + 3, WHITE); gfx_pixel(x + 11, y + 4, WHITE); gfx_pixel(x + 10, y + 5, WHITE);
-    uint32_t k = frame >> 3;
-    for (int w = 0; w < 3; w++)
-        for (int i = 1; i < 12; i++) {
-            if (((uint32_t)(i + w * 2) - k) % 4u == 0) continue;     // gaps rising with the steam
-            if (i > 7 && ((i + w) & 1)) continue;
-            int sxp = x + 2 + w * 3 + ((fx::isin(i * 22 + w * 70 - (int)k * 12) * (i / 4 + 1)) >> 8);
-            gfx_pixel(sxp, y - i, i > 6 ? FELT_LT : WHITE);
-        }
-}
-
 void dealer(uint8_t expr, uint8_t look, int x, int y, bool big) {
     int k = big ? 2 : 1, scale = big ? 512 : 256;
     sprite4(DEALER, x, y, RM_ID, scale);
@@ -170,13 +149,15 @@ void drawBoard(const c4::Board &b, c4::Bits lit) {
     gfx_fillRect(0, y0, x0 - leg, 128 - y0, FELT);
     gfx_fillRect(x1 + leg, y0, 128 - x1 - leg, 128 - y0, FELT);
     if (zoom == 5) {
-        // The table under the lamp: dark toward the corners, the felt's
-        // printed line curving round the board, a pool of light in the middle.
+        // The table under the lamp: every green there is, in rings from the
+        // light in the middle out to the dark corners. (The second dither
+        // puts FELT where the first left FELT, so it only shows in the
+        // light ring.)
         dither(0, top, 128, 128 - top, FELT_DK, 0);
-        gfx_fillEllipse(64, 100, 66, 56, FELT);
-        gfx_fillEllipse(64, 100, 60, 51, GOLD);
-        gfx_fillEllipse(64, 100, 59, 50, FELT);
-        dither(14, y0 - 9, 100, 128, FELT_LT, 1);
+        gfx_fillEllipse(64, 100, 72, 62, FELT);
+        gfx_fillEllipse(64, 100, 65, 56, FELT_LT);
+        dither(0, top, 128, 128 - top, FELT, 1);
+        gfx_fillEllipse(64, 100, 57, 49, FELT_LT);
         gfx_fillRect(0, top, 128, 1, FELT_DK);
         dither(x0 - leg - 2, y0 + 3, 2, y1 - y0 - 3, FELT_DK, 0);
         dither(x1 + leg, y0 + 3, 2, y1 - y0 - 3, FELT_DK, 0);
